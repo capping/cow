@@ -9,10 +9,10 @@ const { ccclass, property } = _decorator;
 @ccclass('Game')
 export class Game extends Component {
     @property(Node)
-    public rope_node = null;
+    public rope_node;
 
     @property(Node)
-    public cow_ins = null;
+    public cow_ins;
 
     @property([SpriteFrame])
     public rope_imgs;
@@ -25,43 +25,44 @@ export class Game extends Component {
 
     onLoad () {
         this.scoreNum = 0; 
-        this.time = 10;
+        this.time = 60;
     }
 
     start () {
             const countDownLabel = find("Canvas/bg_sprite/count_down").getComponent(Label); 
             countDownLabel.string = this.time + "s"; 
+            // 每秒调度一次
             this.schedule(() => {
+                console.log(this.time);
                 this.time--;
                 countDownLabel.string = this.time + "s";
                 if (this.time == 0) {
                     log("游戏结束");
+                    
+                    const resultNode = find("Canvas/result");
+                    // 分数显示
+                    const titleNode = resultNode.getChildByName("title");
+                    titleNode.getComponent(Label).string = "最终得分: " + this.scoreNum;
+                    // 根据分数评级
+                    const contentNode = resultNode.getChildByName("content");
+                    const contentLabel = contentNode.getComponent(Label);
+                    switch (true) {
+                        case this.scoreNum <= 2:
+                            contentLabel.string = "套牛青铜";
+                            break;
+                        case this.scoreNum < 6:
+                            contentLabel.string = "套牛高手";
+                            // break;
+                        case this.scoreNum >= 6:
+                            contentLabel.string = "套牛王者";
+                            break;
+                    }
+                    resultNode.active = true;
                     director.pause();
+                    // console.log(titleNode.getComponent(Label).string)
+                    // console.log(countDownLabel.string)
                 }
             }, 1);
-            // this.schedule(function () { 
-                // if (this.time == 0) { 
-                    // cc.log("游戏结束！"); 
-                    // let resultNode = cc.find("Canvas/result"); 
-                    // let titleNode = resultNode.getChildByName("title"); 
-                    // let contentNode = resultNode.getChildByName("content"); 
-                    // titleNode.getComponent(cc.Label).string = "最终得分 " + this.scoreNum; 
-                    // let contentLabel = contentNode.getComponent(cc.Label); 
-                    // switch (true) { 
-                        // case this.scoreNum <= 3: 
-                            // contentLabel.string = "套牛青铜"; 
-                            // break; 
-                        // case this.scoreNum < 6: 
-                            // contentLabel.string = "套牛高手"; 
-                            // break; 
-                        // case this.scoreNum >= 6: 
-                            // contentLabel.string = "套牛王者"; 
-                            // break; 
-                    // } 
-                    // resultNode.active = true; 
-                    // cc.director.pause(); 
-                // } 
-            // },1); 
     }
 
     clickCapture (event: any, customEventDate: any) {
@@ -101,9 +102,8 @@ export class Game extends Component {
     }
 
     closeBtn () {
-            // cc.log("继续游戏"); 
-            // cc.director.resume(); 
-            // cc.director.loadScene("game"); 
+        log("继续游戏"); 
+        director.resume(); 
+        director.loadScene("scene"); 
     }
-
 }
