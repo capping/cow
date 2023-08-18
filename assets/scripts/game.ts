@@ -25,20 +25,20 @@ export class Game extends Component {
 
     onLoad () {
         this.scoreNum = 0; 
-        this.time = 60;
+        this.time = 30;
     }
 
     start () {
+            console.log("Start method called for node:", this.node.name);
             const countDownLabel = find("Canvas/bg_sprite/count_down").getComponent(Label); 
             countDownLabel.string = this.time + "s"; 
             // 每秒调度一次
             this.schedule(() => {
-                console.log(this.time);
                 this.time--;
                 countDownLabel.string = this.time + "s";
-                if (this.time == 0) {
+                if (this.time <= 0) {
                     log("游戏结束");
-                    
+                    log("Current timestamp:", Date.now());
                     const resultNode = find("Canvas/result");
                     // 分数显示
                     const titleNode = resultNode.getChildByName("title");
@@ -52,17 +52,15 @@ export class Game extends Component {
                             break;
                         case this.scoreNum < 6:
                             contentLabel.string = "套牛高手";
-                            // break;
+                            break;
                         case this.scoreNum >= 6:
                             contentLabel.string = "套牛王者";
                             break;
                     }
                     resultNode.active = true;
                     director.pause();
-                    // console.log(titleNode.getComponent(Label).string)
-                    // console.log(countDownLabel.string)
                 }
-            }, 1);
+            }, 1.0);
     }
 
     clickCapture (event: any, customEventDate: any) {
@@ -88,6 +86,7 @@ export class Game extends Component {
                     bg_node.addChild(this.cow_ins);
 
                     this.scoreNum++;
+                    console.log("score:" + this.scoreNum);
                 } else {
                     console.log("捕捉失败");
                 }

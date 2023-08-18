@@ -3,8 +3,8 @@
     "designResolution": {
       "width": 640,
       "height": 960,
-      "fitHeight": true,
-      "fitWidth": false
+      "fitHeight": false,
+      "fitWidth": true
     },
     "renderPipeline": "fd8ec536-a354-4a17-9c74-4f3883c378c8"
   },

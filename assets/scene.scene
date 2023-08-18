@@ -153,7 +153,7 @@
     "_priority": -1,
     "_fov": 60,
     "_fovAxis": 0,
-    "_orthoHeight": 480,
+    "_orthoHeight": 667,
     "_near": 1,
     "_far": 4096,
     "_color": {
@@ -499,7 +499,7 @@
     "node": {
       "__id__": 9
     },
-    "_enabled": true,
+    "_enabled": false,
     "__prefab": null,
     "rope_node": {
       "__id__": 15
